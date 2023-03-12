@@ -1,0 +1,26 @@
+version: '3'
+services:
+  dhcp:
+    image: sirferdek/isc-dhcp-server
+    container_name: dhcp
+    restart: always
+    network_mode: "host"
+    volumes:
+      - ./dhcp/vldhcp:/var/lib/dhcp
+      - ./dhcp/dhcpd.conf:/etc/dhcp/dhcpd.conf
+    command: ens18
+  tftp:
+    image: jumanjiman/tftp-hpa
+    container_name: tftp
+    restart: always
+    network_mode: "host"
+    volumes:
+      - ./tftp/tftp:/tftpboot
+  http:
+    image: httpd:2.4-alpine3.17
+    container_name: repo
+    restart: always
+    network_mode: "host"
+    volumes:
+      - ./http/repo:/usr/local/apache2/htdocs
+      - ./http/httpd.conf:/usr/local/apache2/conf/httpd.conf
