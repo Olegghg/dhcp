@@ -14,13 +14,17 @@ services:
     container_name: tftp
     restart: always
     network_mode: "host"
+    ports:
+     - :69:69"
     volumes:
-      - ./tftp/tftp:/tftpboot
+      - ./tftp/tftpboot:/tftpboot
   http:
     image: httpd:2.4-alpine3.17
     container_name: repo
     restart: always
     network_mode: "host"
+    ports:
+     - "80:80"
     volumes:
       - ./http/repo:/usr/local/apache2/htdocs
       - ./http/httpd.conf:/usr/local/apache2/conf/httpd.conf
