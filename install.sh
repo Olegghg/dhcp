@@ -1,5 +1,7 @@
 #!/bin/bash
-
+ssh-keygen -t rsa -b 4096 -N "" -f ~/.ssh/id_rsa
+var=$(cat ~/.ssh/id_rsa.pub)
+sed -i "s|ssh-rsa ...|$var|" tftp/tftpboot/ce/preseed.cfg
 apt install -y isc-dhcp-server
 cp -rf dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf
 cp -f dhcp/default /etc/default/isc-dhcp-server
