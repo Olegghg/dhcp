@@ -34,20 +34,20 @@ while True:
 
     # Проверяем, есть ли совпадения
     if hostname_regex.search(dhcpd_content):
-        print(f"Ошибка: Имя хоста {hostname} уже настроено")
+        print("Ошибка: Имя хоста "+hostname+" уже настроено")
     elif mac_regex.search(dhcpd_content):
-        print(f"Ошибка: MAC-адрес {mac_address} уже настроен")
+        print("Ошибка: MAC-адрес "+str(mac_address)+" уже настроен")
     elif ip_regex.search(dhcpd_content):
-        print(f"Ошибка: IP-адрес {ip_address} уже настроен")
+        print("Ошибка: IP-адрес "+str(ip_address)+" уже настроен")
     else:
         # Если совпадений нет, добавляем новую запись
         with open("/etc/dhcp/dhcpd.conf", "a") as file:
-            file.write(f"\nhost {hostname} {{\n  hardware ethernet {mac_address};\n  fixed-address {ip_address};\n}}\n")
+            file.write("\nhost " + hostname + " {\n  hardware ethernet " + mac_address + ";\n  fixed-address " + ip_address + ";")
 
         print("Запись добавлена")
 
     # Формируем строку ansible
-    ansible_line = f"{hostname} ansible_host={ip_address} ansible_user=ansibleuser ansible_ssh_private_key_file=~/.ssh/id_rsa"
+    ansible_line = hostname + " ansible_host=" + ip_address + " ansible_user=ansibleuser ansible_ssh_private_key_file"
 
     # Записываем строку в файл ansible/hosts.ini
     with open("ansible/hosts.ini", "a") as file:
