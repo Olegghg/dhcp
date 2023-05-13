@@ -11,6 +11,8 @@ LABEL local
     append hd0
 # Astra Linux Common Edition
 LABEL netinstall
+    MENU PASSWD password
     MENU LABEL Start Astra Linux CE net install
+    MENU TABMSG
     kernel ce/linux
-    append initrd=ce/initrd.gz modprobe.blacklist=evbug auto=true priority=critical debian-installer/locale=en_US console-keymaps-at/keymap=ru hostname=ce212 domain=my.dom astra-license/license=true url=tftp://192.168.0.1/ce/preseed.cfg interface=auto netcfg/dhcp_timeout=60 vga=788 debian-installer/allow_unauthenticated=true
+    append initrd=ce/initrd.gz modprobe.blacklist=evbug auto=true priority=critical debian-installer/locale=en_US console-keymaps-at/keymap=ru hostname=ce212 domain=my.dom astra-license/license=true url=tftp://192.168.11.1/ce/preseed.cfg interface=auto netcfg/dhcp_timeout=60 vga=788 debian-installer/allow_unauthenticated=true
