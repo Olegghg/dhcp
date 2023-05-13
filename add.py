@@ -42,12 +42,12 @@ while True:
     else:
         # Если совпадений нет, добавляем новую запись
         with open("/etc/dhcp/dhcpd.conf", "a") as file:
-            file.write("\nhost " + hostname + " {\n  hardware ethernet " + mac_address + ";\n  fixed-address " + ip_address + ";")
+            file.write("\nhost " + hostname + " {\n  hardware ethernet " + mac_address + ";\n  fixed-address " + ip_address + ";\n}")
 
         print("Запись добавлена")
 
     # Формируем строку ansible
-    ansible_line = hostname + " ansible_host=" + ip_address + " ansible_user=ansibleuser ansible_ssh_private_key_file"
+    ansible_line = hostname + " ansible_host=" + ip_address + " ansible_user=ansibleuser ansible_ssh_private_key_file=~/.ssh/id_rsa"
 
     # Записываем строку в файл ansible/hosts.ini
     with open("ansible/hosts.ini", "a") as file:
