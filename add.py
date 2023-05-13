@@ -1,4 +1,5 @@
 import re
+import subprocess
 import os
 while True:
     # Запрашиваем данные
@@ -54,4 +55,9 @@ while True:
         file.write(ansible_line + "\n")
     nextstr = input("Введите y для создания еще 1 записи: ")
     if nextstr!="y":
-        exit(0)
+        break
+try:
+    subprocess.check_call(["systemctl", "restart", "isc-dhcp-server"])
+    print("Сервис isc-dhcp-server был перезапущен")
+except subprocess.CalledProcessError:
+    print("Ошибка при перезапуске сервиса isc-dhcp-server")
