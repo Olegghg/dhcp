@@ -27,26 +27,17 @@ subnet 10.10.10.0 netmask 255.255.255.0 {
 2.2 tftp
 
 В tftp/tftpboot/pxelinux.cfg/default поменять 
-- url до preseed.cfg, hostname клиента, domain для клиента  
+- url до preseed.cfg, hostname клиента, domain для клиента  и   пароль на загрузчик 
 Пример:
-
+MENU PASSWD newpassword
 url=tftp://10.10.10.1/ce/preseed.cfg
 
 Поменять tftp/tftpboot/ce/preseed.cfg если есть необходимость
 
-
-
 #Далее отредактировать опции в этом файле:
 
-Основные опции:
-d-i mirror/protocol string http
-d-i mirror/country string manual
+Опции для редактирования:
 d-i mirror/http/hostname string 10.10.10.1 - репозиторий
-d-i time/zone string Europe/Moscow
-d-i passwd/user-fullname string u
-d-i passwd/username string u
-d-i passwd/root-password password pass
-d-i passwd/root-password-again password pass
 
 3. Распаковка iso, http-репозиторий
 
