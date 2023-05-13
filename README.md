@@ -49,7 +49,13 @@ cp -r /mnt/* http/repo/ce/
 cp /mnt/netinst/linux tftp/tftpboot/ce/
 cp /mnt/netinst/initrd.gz tftp/tftpboot/ce/
 
-4. Запуск установки pxe
+4. Редактирование hosts.ini ansible
+
+В файле ansible/hosts.ini
+
+server ansible_host=10.10.10.1 - ip сервера 
+
+5. Запуск установки pxe
 ./install.sh
 
  
