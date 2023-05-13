@@ -51,7 +51,7 @@ while True:
     ansible_line = hostname + " ansible_host=" + ip_address + " ansible_user=ansibleuser ansible_ssh_private_key_file=~/.ssh/id_rsa"
 
     # Записываем строку в файл ansible/hosts.ini
-    with open("ansible/hosts.ini", "a") as file:
+    with open("/etc/ansible/hosts.ini", "a") as file:
         file.write(ansible_line + "\n")
     nextstr = input("Введите y для создания еще 1 записи: ")
     if nextstr!="y":
