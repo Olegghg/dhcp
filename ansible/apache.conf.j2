@@ -1,0 +1,14 @@
+<VirtualHost *:10000>
+    ServerAdmin admin@example.com
+    ServerName mirror.example.com
+    DocumentRoot /var/www/astra-linux
+
+    <Directory /var/www/astra-linux>
+        Options Indexes FollowSymLinks
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/astra-linux_error.log
+    CustomLog ${APACHE_LOG_DIR}/astra-linux_access.log combined
+</VirtualHost>

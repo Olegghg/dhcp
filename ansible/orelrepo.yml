@@ -1,0 +1,47 @@
+---
+- name: Deplayrepo
+  hosts: server
+  tasks:
+   - name: Установить пакет Apache
+     become: true
+     apt:
+       name:
+        - apache2
+        - rsync
+       state: present
+
+   - name: Создать директорию для зеркала
+     become: true
+     file:
+       path: "/var/www/astra-linux"
+       state: directory
+       mode: "0755"
+       owner: www-data
+       group: www-data
+
+   - name: Зеркалировать репозиторий Astra Linux
+     become: true
+     command: "rsync -avz --delete mirror.yandex.ru::astra/stable/2.12_x86-64/repository/ /var/www/astra-linux"
+
+   - name: Настроить Apache для обслуживания зеркала
+     become: true
+     template:
+       src: "apache.conf.j2"
+       dest: "/etc/apache2/sites-available/astra-linux.conf"
+       owner: root
+       group: root
+       mode: "0644"
+
+   - name: Включить новый виртуальный хост в Apache
+     become: true
+     command: "a2ensite astra-linux.conf"
+
+   - name: Отключить дефолтный виртуальный хост в Apache
+     become: true
+     command: "a2dissite 000-default.conf"  
+   - name: restart apache2
+     become: true
+     service:
+       name: apache2
+       state: restarted
+
