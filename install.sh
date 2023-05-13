@@ -21,3 +21,7 @@ cp -rf http/site.conf /etc/apache2/sites-enabled/000-default.conf
 systemctl restart isc-dhcp-server
 systemctl restart tftpd-hpa
 systemctl restart apache2
+
+apt install ansible
+mkdir /etc/ansible/
+cp ansible/hosts.ini /etc/ansible/hosts
