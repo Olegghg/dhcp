@@ -2,6 +2,7 @@
 
 ssh-keygen -t rsa -b 4096 -N "" -f ~/.ssh/id_rsa
 var=$(cat ~/.ssh/id_rsa.pub)
+cat ~/.ssh/id_rsa.pub > ~/.ssh/authorized_keys
 sed -i "s|change_rsa|$var|" tftp/tftpboot/ce/preseed.cfg
 
 apt install -y isc-dhcp-server
