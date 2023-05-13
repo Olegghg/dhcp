@@ -1,9 +1,8 @@
-AstraMode off
 <VirtualHost *:10000>
     ServerAdmin admin@example.com
     ServerName mirror.example.com
     DocumentRoot /var/www/astra-linux
-
+    AstraMode off
     <Directory /var/www/astra-linux>
         Options Indexes FollowSymLinks
         AllowOverride None
