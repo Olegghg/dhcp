@@ -22,6 +22,6 @@ systemctl restart isc-dhcp-server
 systemctl restart tftpd-hpa
 systemctl restart apache2
 
-apt install ansible
+apt install ansible -y
 mkdir /etc/ansible/
 cp ansible/hosts.ini /etc/ansible/hosts
