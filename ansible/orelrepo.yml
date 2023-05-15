@@ -31,7 +31,10 @@
        owner: root
        group: root
        mode: "0644"
-
+  - name: Add line to file
+      ansible.builtin.lineinfile:
+        path: /etc/apache2/ports.conf
+        line: 'Listen 10000'
    - name: Включить новый виртуальный хост в Apache
      become: true
      command: "a2ensite astra-linux.conf"
