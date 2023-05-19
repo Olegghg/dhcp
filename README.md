@@ -1,10 +1,10 @@
-# pxe
-1. Установка git
-
-apt install git
-git clone https://github.com/Olegghg/pxe.git
-cd pxe
-
+# pxe   
+1. Установка git   
+   
+apt install git   
+git clone https://github.com/Olegghg/pxe.git   
+cd pxe   
+   
 2. Редактирование конфигов
 2.1. dhcp
 В файле dhcp/default указать используемый порт
