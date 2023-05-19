@@ -26,22 +26,16 @@
    - name: Настроить Apache для обслуживания зеркала
      become: true
      template:
-       src: "apache.conf.j2"
+       src: "../templates/apache.conf.j2"
        dest: "/etc/apache2/sites-available/astra-linux.conf"
        owner: root
        group: root
        mode: "0644"
-  - name: Add line to file
-      ansible.builtin.lineinfile:
-        path: /etc/apache2/ports.conf
-        line: 'Listen 10000'
+
    - name: Включить новый виртуальный хост в Apache
      become: true
      command: "a2ensite astra-linux.conf"
 
-   - name: Отключить дефолтный виртуальный хост в Apache
-     become: true
-     command: "a2dissite 000-default.conf"  
    - name: restart apache2
      become: true
      service:

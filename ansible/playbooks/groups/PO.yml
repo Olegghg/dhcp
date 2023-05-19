@@ -1,0 +1,28 @@
+---
+- name: PO
+  hosts: PO
+  become: true
+  tasks:
+    - name: Gather package facts
+      package_facts:
+        manager: auto
+    - name: Download Visual Studio Code .deb package
+      get_url:
+        url: https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
+        dest: /tmp/code.deb
+      when: "'code' not in ansible_facts.packages"
+    - name: Install Visual Studio Code
+      apt:
+        deb: /tmp/code.deb
+        update_cache: yes
+      when: "'code' not in ansible_facts.packages"
+    - name: Install Geany package
+      apt:
+        name: geany
+        state: present
+    - name: Install mysql
+      apt:
+        name:
+         - mysql-server
+         - mysql-client
+        state: present

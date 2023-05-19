@@ -6,6 +6,7 @@ while True:
     hostname = input("Введите имя хоста: ")
     mac_address = input("Введите MAC-адрес (в формате xx:xx:xx:xx:xx:xx): ")
     ip_address = input("Введите IP-адрес: ")
+    groupname = input('Название anible группы (файл /etc/ansible/hosts). Например KS: ')
 
     #проверка MAC
     mac_regex_format = re.compile(r"^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$")
@@ -17,6 +18,14 @@ while True:
     ip_regex_format = re.compile(r"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")
     if not ip_regex_format.match(ip_address):
         print("Ошибка: IP-адрес не соответствует формату x.x.x.x, где x от 0 до 255")
+        exit(1)
+
+    #Проверка названия группы
+    with open("/etc/ansible/hosts", "r") as file:
+        ansible_content = file.read()
+        group_regex=re.compile(r"\["+groupname+"\]")
+    if not group_regex.search(ansible_content):
+        print(f"Ошибка: Нет такой группы")
         exit(1)
 
     # Проверяем, существует ли файл dhcpd.conf
@@ -48,11 +57,15 @@ while True:
         print("Запись добавлена")
 
     # Формируем строку ansible
-    ansible_line = hostname + " ansible_host=" + ip_address + " ansible_user=ansibleuser ansible_ssh_private_key_file=~/.ssh/id_rsa"
+    ansible_line = "["+groupname+"]\n" + hostname + " ansible_host=" + ip_address + " ansible_user=ansibleuser ansible_ssh_private_key_file=~/.ssh/id_rsa"
 
     # Записываем строку в файл ansible/hosts.ini
-    with open("/etc/ansible/hosts.ini", "a") as file:
-        file.write(ansible_line + "\n")
+    with open('/etc/ansible/hosts', 'r') as f:
+        content = f.read()
+    content = content.replace("["+groupname+"]", ansible_line)
+    with open('/etc/ansible/hosts', 'w') as f:
+        f.write(content)
+    #Новая запись?
     nextstr = input("Введите y для создания еще 1 записи: ")
     if nextstr!="y":
         break

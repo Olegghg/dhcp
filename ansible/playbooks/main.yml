@@ -1,0 +1,66 @@
+---
+- name: Deploy other
+  hosts: clients
+  become: true
+  tasks:
+    - name: Set hostname in /etc/hostname
+      become: yes
+      lineinfile:
+        path: /etc/hostname
+        regexp: '.*'
+        line: "{{ ansible_host }}"
+        backrefs: no
+    - name: Generate repo.list
+      template:
+        src: ../templates/repo.j2
+        dest: /etc/apt/sources.list.d/repo.list
+        owner: root
+        group: root
+        mode: '0644'
+    - name: Gather package facts
+      package_facts:
+        manager: auto
+    - name: Update
+      apt:
+        update_cache: yes
+    - name: Upgrade all packages to the latest version
+      apt:
+        upgrade: dist
+    - name: Create 'student' user
+      user:
+        name: student
+        password: "!"
+        shell: /bin/bash
+        create_home: yes
+        remove: no
+    - name: Create 'adminpc' user
+      user:
+        name: adminpc
+        # created with:
+        #python -c 'import crypt; print crypt.crypt("nrebr","$1$P@asswor$")'
+        password: $1$P@asswor$UQzt3pAXTZw.vrclO42ut0
+        shell: /bin/bash
+        groups: sudo
+        append: yes
+        create_home: yes
+        remove: no
+    - name: Download OnlyOffice .deb package
+      get_url:
+        url: https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb?_ga=2.78$
+        dest: /tmp/onlyoffice-desktopeditors_amd64.deb
+      when: "'onlyoffice-desktopeditors' not in ansible_facts.packages"
+    - name: Install OnlyOffice
+      apt:
+        deb: /tmp/onlyoffice-desktopeditors_amd64.deb
+        update_cache: yes
+      when: "'onlyoffice-desktopeditors' not in ansible_facts.packages"
+    - name: Install wine
+      apt:
+        name:
+         - wine-devel-amd64
+         - wine-staging-amd64
+         - winetricks
+        state: present
+- import_playbook: groups/PO.yml
+- import_playbook: groups/KS.yml
+- import_playbook: groups/IB.yml

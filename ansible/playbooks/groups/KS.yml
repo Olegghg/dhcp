@@ -1,0 +1,40 @@
+---
+- name: KS
+  hosts: KS
+  become: true
+  tasks:
+    - name: Gather package facts
+      package_facts:
+        manager: auto
+    - name: Install Geany package
+      apt:
+        name: geany
+        state: present
+    - name: Install mysql
+      apt:
+        name:
+         - mysql-server
+         - mysql-client
+        state: present
+    - name: Install wireshark
+      apt:
+        name: wireshark
+        state: present   
+    - name: Install required packages
+      apt:
+        name:
+          - qemu
+          - qemu-kvm
+          - libvirt-daemon
+          - libvirt-clients
+          - bridge-utils
+          - virt-manager
+        state: present
+    - name: Add user to libvirt group
+      user:
+        name: "{{ item }}"
+        groups: libvirt
+        append: yes
+      loop:
+       - student
+       - adminpc
