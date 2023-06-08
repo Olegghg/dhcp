@@ -20,6 +20,10 @@
       apt:
         name: geany
         state: present
+    - name: Install Scratch package
+      apt:
+        name: scratch
+        state: present
     - name: Install mysql
       apt:
         name:
